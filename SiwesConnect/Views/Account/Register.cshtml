@@ -1,0 +1,38 @@
+﻿@model SiwesConnect.Models.RegisterViewModel
+
+<h2>Register</h2>
+
+<form asp-action="Register" method="post">
+    <div>
+        <label>Full Name</label>
+        <input asp-for="FullName" />
+        <span asp-validation-for="FullName"></span>
+    </div>
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label>Password</label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label>Confirm Password</label>
+        <input asp-for="ConfirmPassword" />
+        <span asp-validation-for="ConfirmPassword"></span>
+    </div>
+    <div>
+        <label>Register As</label>
+        <select asp-for="UserType">
+            <option value="">-- Select --</option>
+            <option value="Student">Student</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Admin">Admin</option>
+        </select>
+        <span asp-validation-for="UserType"></span>
+    </div>
+    <div asp-validation-summary="All"></div>
+    <button type="submit">Register</button>
+</form>

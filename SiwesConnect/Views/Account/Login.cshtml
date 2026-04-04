@@ -1,0 +1,25 @@
+﻿@model SiwesConnect.Models.LoginViewModel
+
+<h2>Login</h2>
+
+<form asp-action="Login" method="post">
+   
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label>Password</label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label>Remember Me</label>
+        <input asp-for="RememberMe" type="checkbox" />
+    </div>
+ 
+   
+    <div asp-validation-summary="All"></div>
+    <button type="submit">Login</button>
+</form>
