@@ -9,5 +9,8 @@ namespace SiwesConnect.Models
             : base(options)
         {
         }
+
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Internship> Internships { get; set; }
     }
 }
