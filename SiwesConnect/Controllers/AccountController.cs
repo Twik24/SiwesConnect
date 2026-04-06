@@ -63,7 +63,15 @@ namespace SiwesConnect.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    var user = await _userManager.FindByEmailAsync(model.Email!);
+                    var roles = await _userManager.GetRolesAsync(user!);
+
+                    if (roles.Contains("Admin"))
+                        return RedirectToAction("Index", "Admin");
+                    else if (roles.Contains("Supervisor"))
+                        return RedirectToAction("Index", "Supervisor");
+                    else
+                        return RedirectToAction("Index", "Student");
                 }
 
                 ModelState.AddModelError("", "Invalid login attempt.");
