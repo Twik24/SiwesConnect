@@ -1,0 +1,22 @@
+﻿@model List<SiwesConnect.Models.Internship>
+
+<h2>Available Internships</h2>
+
+@if (Model.Count == 0)
+{
+    <p>No internships available at the moment.</p>
+}
+else
+{
+    foreach (var internship in Model)
+    {
+        <div>
+            <h3>@internship.Title</h3>
+            <p><strong>Location:</strong> @internship.Location</p>
+            <p><strong>Duration:</strong> @internship.Duration</p>
+            <p><strong>Deadline:</strong> @internship.ApplicationDeadline.ToShortDateString()</p>
+            <p>@internship.Description</p>
+            <hr />
+        </div>
+    }
+}
