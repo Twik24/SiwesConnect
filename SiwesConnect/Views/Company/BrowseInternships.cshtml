@@ -16,6 +16,9 @@ else
             <p><strong>Duration:</strong> @internship.Duration</p>
             <p><strong>Deadline:</strong> @internship.ApplicationDeadline.ToShortDateString()</p>
             <p>@internship.Description</p>
+            <a asp-controller="Company" asp-action="Apply" asp-route-id="@internship.InternshipID">
+                Apply
+            </a>
             <hr />
         </div>
     }

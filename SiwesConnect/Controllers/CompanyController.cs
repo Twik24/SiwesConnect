@@ -57,5 +57,33 @@ namespace SiwesConnect.Controllers
             var internships = _context.Internships.ToList();
             return View(internships);
         }
+
+        //Students apply for the internship
+        [Authorize(Roles = "Student")]
+        public async Task<IActionResult> Apply(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var existingApplication = _context.Applications
+                .FirstOrDefault(a => a.InternshipID == id && a.StudentID == user!.Id);
+
+            if (existingApplication != null)
+            {
+                return Content("You have already applied for this internship.");
+            }
+
+            var application = new Application
+            {
+                InternshipID = id,
+                StudentID = user!.Id,
+                ApplicationDate = DateTime.Now,
+                Status = "Pending"
+            };
+
+            _context.Applications.Add(application);
+            await _context.SaveChangesAsync();
+
+            return Content("Application submitted successfully!");
+        }
     }
 }
