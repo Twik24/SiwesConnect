@@ -1,0 +1,28 @@
+﻿@model List<SiwesConnect.Models.Application>
+
+<h2>All Applications</h2>
+
+@if (Model.Count == 0)
+{
+    <p>No applications yet.</p>
+}
+else
+{
+    foreach (var app in Model)
+    {
+        <div>
+            <p><strong>Student ID:</strong> @app.StudentID</p>
+            <p><strong>Internship ID:</strong> @app.InternshipID</p>
+            <p><strong>Date Applied:</strong> @app.ApplicationDate.ToShortDateString()</p>
+            <p><strong>Status:</strong> @app.Status</p>
+
+            @if (app.Status == "Pending")
+            {
+              <a asp-action="AcceptApplication" asp-route-id="@app.ApplicationID">Accept</a>
+            
+              <a asp-action = "RejectApplication" asp-route-id = "@app.ApplicationID" >Reject</a >
+            }
+            <hr />
+        </div>
+    }
+}

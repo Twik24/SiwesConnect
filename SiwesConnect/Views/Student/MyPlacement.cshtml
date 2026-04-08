@@ -1,0 +1,15 @@
+﻿@model SiwesConnect.Models.Placement
+
+<h2>My Placement</h2>
+
+@if (Model == null)
+{
+    <p>You have not been placed yet.</p>
+}
+else
+{
+    <p><strong>Internship ID:</strong> @Model.InternshipID</p>
+    <p><strong>Start Date:</strong> @Model.StartDate.ToShortDateString()</p>
+    <p><strong>End Date:</strong> @Model.EndDate.ToShortDateString()</p>
+    <p><strong>Status:</strong> @Model.Status</p>
+}
