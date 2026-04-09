@@ -1,0 +1,12 @@
+﻿@model SiwesConnect.Models.ReviewViewModel
+
+<h2>Add Comment</h2>
+
+<form asp-action="AddComment" method="post">
+    <input type="hidden" asp-for="EntryId" />
+    <div>
+        <label>Comment</label>
+        <textarea asp-for="Comment"></textarea>
+    </div>
+    <button type="submit">Submit Comment</button>
+</form>
