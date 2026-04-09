@@ -1,6 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Student Dashboard";
-}
+﻿<h2>Student Dashboard</h2>
+<p>Welcome to SiwesConnect!</p>
 
-<h2>Welcome, Student!</h2>
-<p>This is your dashboard. You can browse internships and manage your logbook from here.</p>
+<div>
+    <h3>Quick Links</h3>
+    <a asp-action="MyPlacement">My Placement</a> |
+    <a asp-action="MyLogbook">My Logbook</a> |
+    <a asp-action="SubmitLogbook">Submit Logbook Entry</a> |
+    <a asp-controller="Company" asp-action="BrowseInternships">Browse Internships</a>
+</div>

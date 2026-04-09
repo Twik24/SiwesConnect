@@ -1,7 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Admin Dashboard";
-}
+﻿<h2>Admin Dashboard</h2>
 
-<h2>Welcome, Admin!</h2>
-<p>This is the Admin dashboard.
-    You can monitor all students and placements from here.</p>
+<div>
+    <h3>System Overview</h3>
+    <p><strong>Total Users:</strong> @ViewBag.TotalStudents</p>
+    <p><strong>Total Internships:</strong> @ViewBag.TotalInternships</p>
+    <p><strong>Total Applications:</strong> @ViewBag.TotalApplications</p>
+    <p><strong>Total Placements:</strong> @ViewBag.TotalPlacements</p>
+</div>
