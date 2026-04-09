@@ -1,0 +1,18 @@
+﻿@model SiwesConnect.Models.LogbookViewModel
+
+<h2>Submit Logbook Entry</h2>
+
+<form asp-action="SubmitLogbook" method="post">
+    <div>
+        <label>Week Number</label>
+        <input asp-for="WeekNumber" />
+        <span asp-validation-for="WeekNumber"></span>
+    </div>
+    <div>
+        <label>Work Description</label>
+        <textarea asp-for="WorkDescription"></textarea>
+        <span asp-validation-for="WorkDescription"></span>
+    </div>
+    <div asp-validation-summary="All"></div>
+    <button type="submit">Submit Entry</button>
+</form>

@@ -1,0 +1,27 @@
+﻿@model List<SiwesConnect.Models.LogbookEntry>
+
+<h2>My Logbook</h2>
+
+<a asp-action="SubmitLogbook">Submit New Entry</a>
+
+@if (Model.Count == 0)
+{
+    <p>No entries yet.</p>
+}
+else
+{
+    foreach (var entry in Model)
+    {
+        <div>
+            <p><strong>Week:</strong> @entry.WeekNumber</p>
+            <p><strong>Work Done:</strong> @entry.WorkDescription</p>
+            <p><strong>Date Submitted:</strong> @entry.DateSubmitted.ToShortDateString()</p>
+            <p><strong>Status:</strong> @entry.ApprovalStatus</p>
+            @if (entry.SupervisorComment != null)
+            {
+                <p><strong>Supervisor Comment:</strong> @entry.SupervisorComment</p>
+            }
+            <hr />
+        </div>
+    }
+}

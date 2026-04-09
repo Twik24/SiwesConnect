@@ -30,5 +30,60 @@ namespace SiwesConnect.Controllers
                 .FirstOrDefault(p => p.StudentID == user!.Id);
             return View(placement);
         }
+
+        public IActionResult SubmitLogbook()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitLogbook(LogbookViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var placement = _context.Placements
+                    .FirstOrDefault(p => p.StudentID == user!.Id);
+
+                if (placement == null)
+                {
+                    return Content("You don't have an active placement yet.");
+                }
+
+                var entry = new LogbookEntry
+                {
+                    PlacementID = placement.PlacementID,
+                    WeekNumber = model.WeekNumber,
+                    WorkDescription = model.WorkDescription,
+                    DateSubmitted = DateTime.Now,
+                    ApprovalStatus = "Pending"
+                };
+
+                _context.LogbookEntries.Add(entry);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("MyLogbook");
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> MyLogbook()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var placement = _context.Placements
+                .FirstOrDefault(p => p.StudentID == user!.Id);
+
+            if (placement == null)
+            {
+                return Content("You don't have an active placement yet.");
+            }
+
+            var entries = _context.LogbookEntries
+                .Where(e => e.PlacementID == placement.PlacementID)
+                .ToList();
+
+            return View(entries);
+        }
     }
 }
