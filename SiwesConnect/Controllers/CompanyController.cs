@@ -69,9 +69,11 @@ namespace SiwesConnect.Controllers
 
             if (existingApplication != null)
             {
-                return Content("You have already applied for this internship.");
+                return RedirectToAction("AlreadyApplied");
             }
 
+
+           
             var application = new Application
             {
                 InternshipID = id,
@@ -83,7 +85,21 @@ namespace SiwesConnect.Controllers
             _context.Applications.Add(application);
             await _context.SaveChangesAsync();
 
-            return Content("Application submitted successfully!");
+            return RedirectToAction("ApplicationSuccess");
         }
+        
+
+        [Authorize(Roles = "Student")]
+        public IActionResult ApplicationSuccess()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Student")]
+        public IActionResult AlreadyApplied()
+        {
+            return View();
+        }
+
     }
-}
+    }

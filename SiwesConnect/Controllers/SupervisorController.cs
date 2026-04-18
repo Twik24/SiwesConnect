@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SiwesConnect.Models;
 
@@ -8,10 +9,13 @@ namespace SiwesConnect.Controllers
     public class SupervisorController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public SupervisorController(ApplicationDbContext context)
+        public SupervisorController(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -65,10 +69,28 @@ namespace SiwesConnect.Controllers
             return RedirectToAction("ViewLogbookEntries");
         }
 
-        public IActionResult ViewApplications()
+        public async Task<IActionResult> ViewApplications()
         {
             var applications = _context.Applications.ToList();
-            return View(applications);
+            var result = new List<ApplicationDetail>();
+
+            foreach (var app in applications)
+            {
+                var student = await _userManager.FindByIdAsync(app.StudentID!);
+                var internship = _context.Internships.FirstOrDefault(i => i.InternshipID == app.InternshipID);
+                result.Add(new ApplicationDetail
+                {
+                    ApplicationID = app.ApplicationID,
+                    StudentName = student?.FullName ?? "Unknown",
+                    InternshipTitle = internship?.Title ?? "Unknown",
+                    InternshipID = app.InternshipID,
+                    ApplicationDate = app.ApplicationDate,
+                    Status = app.Status
+                });
+            }
+
+            ViewBag.Applications = result;
+            return View();
         }
 
         public async Task<IActionResult> AcceptApplication(int id)
@@ -101,5 +123,15 @@ namespace SiwesConnect.Controllers
             }
             return RedirectToAction("ViewApplications");
         }
+    }
+
+    public class ApplicationDetail
+    {
+        public int ApplicationID { get; set; }
+        public string? StudentName { get; set; }
+        public int InternshipID { get; set; }
+        public DateTime ApplicationDate { get; set; }
+        public string? Status { get; set; }
+        public string? InternshipTitle { get; set; }
     }
 }
