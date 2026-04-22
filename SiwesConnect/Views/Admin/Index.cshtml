@@ -2,8 +2,15 @@
 
 <div>
     <h3>System Overview</h3>
-    <p><strong>Total Users:</strong> @ViewBag.TotalStudents</p>
+    <p><strong>Total Students:</strong> @ViewBag.TotalStudents</p>
+    <p><strong>Total Supervisor:</strong> @ViewBag.TotalSupervisors</p>
     <p><strong>Total Internships:</strong> @ViewBag.TotalInternships</p>
     <p><strong>Total Applications:</strong> @ViewBag.TotalApplications</p>
     <p><strong>Total Placements:</strong> @ViewBag.TotalPlacements</p>
 </div>
+
+<div>
+    <h3>Quick Links</h3>
+    <a asp-action="ViewPlacements">View All Placements</a>
+</div>
+

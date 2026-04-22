@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SiwesConnect.Models;
+using static SiwesConnect.Controllers.AdminController;
 
 namespace SiwesConnect.Controllers
 {
@@ -99,10 +100,12 @@ namespace SiwesConnect.Controllers
             if (application != null)
             {
                 application.Status = "Accepted";
+                var supervisor = await _userManager.GetUserAsync(User);
                 var placement = new Placement
                 {
                     StudentID = application.StudentID,
                     InternshipID = application.InternshipID,
+                    SupervisorID = supervisor!.Id,
                     StartDate = DateTime.Now,
                     EndDate = DateTime.Now.AddMonths(6),
                     Status = "Active"
@@ -123,15 +126,45 @@ namespace SiwesConnect.Controllers
             }
             return RedirectToAction("ViewApplications");
         }
-    }
 
-    public class ApplicationDetail
-    {
-        public int ApplicationID { get; set; }
-        public string? StudentName { get; set; }
-        public int InternshipID { get; set; }
-        public DateTime ApplicationDate { get; set; }
-        public string? Status { get; set; }
-        public string? InternshipTitle { get; set; }
+
+        public async Task<IActionResult> ViewMyStudents()
+        {
+            var supervisor = await _userManager.GetUserAsync(User);
+            var placements = _context.Placements
+                .Where(p => p.SupervisorID == supervisor!.Id)
+                .ToList();
+
+            var result = new List<PlacementDetail>();
+
+            foreach (var placement in placements)
+            {
+                var student = await _userManager.FindByIdAsync(placement.StudentID!);
+                var internship = _context.Internships
+                    .FirstOrDefault(i => i.InternshipID == placement.InternshipID);
+
+                result.Add(new PlacementDetail
+                {
+                    StudentName = student?.FullName ?? "Unknown",
+                    InternshipTitle = internship?.Title ?? "Unknown",
+                    StartDate = placement.StartDate,
+                    EndDate = placement.EndDate,
+                    Status = placement.Status
+                });
+            }
+
+            ViewBag.Placements = result;
+            return View();
+        }
+
+        public class ApplicationDetail
+        {
+            public int ApplicationID { get; set; }
+            public string? StudentName { get; set; }
+            public int InternshipID { get; set; }
+            public DateTime ApplicationDate { get; set; }
+            public string? Status { get; set; }
+            public string? InternshipTitle { get; set; }
+        }
     }
 }

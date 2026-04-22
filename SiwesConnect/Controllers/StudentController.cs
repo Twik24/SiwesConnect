@@ -18,8 +18,10 @@ namespace SiwesConnect.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.StudentName = user?.FullName ?? "Student";
             return View();
         }
 
