@@ -1,0 +1,19 @@
+﻿<h2>My Applications</h2>
+
+@if (ViewBag.Applications == null || ViewBag.Applications.Count == 0)
+{
+    <p>You haven't applied for any internships yet.</p>
+    <a asp-controller="Company" asp-action="BrowseInternships">Browse Internships</a>
+}
+else
+{
+    foreach (var app in ViewBag.Applications)
+    {
+        <div>
+            <p><strong>Internship:</strong> @app.InternshipTitle</p>
+            <p><strong>Date Applied:</strong> @app.ApplicationDate.ToShortDateString()</p>
+            <p><strong>Status:</strong> @app.Status</p>
+            <hr />
+        </div>
+    }
+}

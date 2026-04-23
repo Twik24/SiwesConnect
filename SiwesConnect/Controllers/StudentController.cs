@@ -87,5 +87,31 @@ namespace SiwesConnect.Controllers
 
             return View(entries);
         }
+
+        public async Task<IActionResult> MyApplications()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var applications = _context.Applications
+                .Where(a => a.StudentID == user!.Id)
+                .ToList();
+
+            var result = new List<ApplicationStatusDetail>();
+
+            foreach (var app in applications)
+            {
+                var internship = _context.Internships
+                    .FirstOrDefault(i => i.InternshipID == app.InternshipID);
+
+                result.Add(new ApplicationStatusDetail
+                {
+                    InternshipTitle = internship?.Title ?? "Unknown",
+                    ApplicationDate = app.ApplicationDate,
+                    Status = app.Status
+                });
+            }
+
+            ViewBag.Applications = result;
+            return View();
+        }
     }
 }
