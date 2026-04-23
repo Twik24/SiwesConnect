@@ -60,34 +60,46 @@ namespace SiwesConnect.Controllers
 
         //Students apply for the internship
         [Authorize(Roles = "Student")]
-        public async Task<IActionResult> Apply(int id)
+        public IActionResult Apply(int id)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var model = new ApplyViewModel { InternshipID = id };
+            return View(model);
+        }
 
-            var existingApplication = _context.Applications
-                .FirstOrDefault(a => a.InternshipID == id && a.StudentID == user!.Id);
-
-            if (existingApplication != null)
+        [HttpPost]
+        [Authorize(Roles = "Student")]
+        public async Task<IActionResult> Apply(ApplyViewModel model)
+        {
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("AlreadyApplied");
+                var user = await _userManager.GetUserAsync(User);
+
+                var existingApplication = _context.Applications
+                    .FirstOrDefault(a => a.InternshipID == model.InternshipID && a.StudentID == user!.Id);
+
+                if (existingApplication != null)
+                {
+                    return RedirectToAction("AlreadyApplied");
+                }
+
+                var application = new Application
+                {
+                    InternshipID = model.InternshipID,
+                    StudentID = user!.Id,
+                    ApplicationDate = DateTime.Now,
+                    Status = "Pending",
+                    CoverLetter = model.CoverLetter
+                };
+
+                _context.Applications.Add(application);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("ApplicationSuccess");
             }
 
-
-           
-            var application = new Application
-            {
-                InternshipID = id,
-                StudentID = user!.Id,
-                ApplicationDate = DateTime.Now,
-                Status = "Pending"
-            };
-
-            _context.Applications.Add(application);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("ApplicationSuccess");
+            return View(model);
         }
-        
+
 
         [Authorize(Roles = "Student")]
         public IActionResult ApplicationSuccess()
@@ -102,4 +114,4 @@ namespace SiwesConnect.Controllers
         }
 
     }
-    }
+  }

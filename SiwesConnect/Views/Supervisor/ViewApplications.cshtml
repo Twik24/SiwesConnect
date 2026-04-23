@@ -12,6 +12,7 @@ else
             <p><strong>Student Name:</strong> @app.StudentName</p>
             <p><strong>Internship:</strong> @app.InternshipTitle</p>
             <p><strong>Date Applied:</strong> @app.ApplicationDate.ToShortDateString()</p>
+            <p><strong>Cover Letter:</strong> @app.CoverLetter</p>
             <p><strong>Status:</strong> @app.Status</p>
 
             @if (app.Status == "Pending")
@@ -22,5 +23,7 @@ else
              }
             <hr />
         </div>
+
+
     }
 }

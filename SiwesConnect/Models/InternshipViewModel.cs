@@ -4,8 +4,9 @@ namespace SiwesConnect.Models
 {
     public class InternshipViewModel
     {
-        [Required]
-        
+       
+        [Required(ErrorMessage = "Title is required")]
+        [StringLength(100)]
         public string? Title { get; set; }
 
         [Required]
@@ -17,6 +18,7 @@ namespace SiwesConnect.Models
         public string? Duration { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime ApplicationDeadline { get; set; }
     }
 }

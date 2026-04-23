@@ -1,0 +1,19 @@
+﻿@model SiwesConnect.Models.ApplyViewModel
+
+<h2>Apply for Internship</h2>
+
+<form asp-action="Apply" method="post">
+    <input type="hidden" asp-for="InternshipID" />
+    
+    <div>
+        <label>Cover Letter</label>
+        <p>Tell the supervisor why you are interested in this internship and what skills you bring.</p>
+        <textarea asp-for="CoverLetter" rows="10" cols="50"></textarea>
+        <span asp-validation-for="CoverLetter"></span>
+    </div>
+    
+    <div asp-validation-summary="All"></div>
+    <button type="submit">Submit Application</button>
+</form>
+
+<a asp-action="BrowseInternships">Back to Internships</a>

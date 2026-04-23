@@ -10,5 +10,6 @@ namespace SiwesConnect.Models
         public int InternshipID { get; set; }
         public DateTime ApplicationDate { get; set; }
         public string? Status { get; set; }
+        public string? CoverLetter { get; set; }
     }
 }

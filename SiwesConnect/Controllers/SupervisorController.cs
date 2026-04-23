@@ -86,6 +86,7 @@ namespace SiwesConnect.Controllers
                     InternshipTitle = internship?.Title ?? "Unknown",
                     InternshipID = app.InternshipID,
                     ApplicationDate = app.ApplicationDate,
+                    CoverLetter = app.CoverLetter,
                     Status = app.Status
                 });
             }
@@ -149,6 +150,7 @@ namespace SiwesConnect.Controllers
                     InternshipTitle = internship?.Title ?? "Unknown",
                     StartDate = placement.StartDate,
                     EndDate = placement.EndDate,
+                    
                     Status = placement.Status
                 });
             }
@@ -165,6 +167,7 @@ namespace SiwesConnect.Controllers
             public DateTime ApplicationDate { get; set; }
             public string? Status { get; set; }
             public string? InternshipTitle { get; set; }
+            public string? CoverLetter { get; set; }
         }
     }
 }
