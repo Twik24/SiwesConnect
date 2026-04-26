@@ -1,15 +1,13 @@
-﻿@model SiwesConnect.Models.Placement
+﻿<h2>My Placement</h2>
 
-<h2>My Placement</h2>
+<div>
+    <p><strong>Internship:</strong> @ViewBag.InternshipTitle</p>
+    <p><strong>Location:</strong> @ViewBag.InternshipLocation</p>
+    <p><strong>Duration:</strong> @ViewBag.Duration</p>
+    <p><strong>Start Date:</strong> @ViewBag.StartDate.ToShortDateString()</p>
+    <p><strong>End Date:</strong> @ViewBag.EndDate.ToShortDateString()</p>
+    <p><strong>Status:</strong> @ViewBag.Status</p>
+</div>
 
-@if (Model == null)
-{
-    <p>You have not been placed yet.</p>
-}
-else
-{
-    <p><strong>Internship ID:</strong> @Model.InternshipID</p>
-    <p><strong>Start Date:</strong> @Model.StartDate.ToShortDateString()</p>
-    <p><strong>End Date:</strong> @Model.EndDate.ToShortDateString()</p>
-    <p><strong>Status:</strong> @Model.Status</p>
-}
+<a asp-action="MyLogbook">View My Logbook</a> |
+<a asp-action="Index">Go to Dashboard</a>

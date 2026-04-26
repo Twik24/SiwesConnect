@@ -19,8 +19,12 @@ else
             {
                 <p><strong>Comment:</strong> @entry.SupervisorComment</p>
             }
-            <a asp-action="ApproveEntry" asp-route-id="@entry.EntryId">Approve</a> |
-            <a asp-action="RejectEntry" asp-route-id="@entry.EntryId">Reject</a> |
+            @if (entry.ApprovalStatus == "Pending")
+            {
+                <a asp-action="ApproveEntry" asp-route-id="@entry.EntryId">Approve|</a>
+            
+                 <a asp-action="RejectEntry" asp-route-id ="@entry.EntryId">Reject|</a> 
+            }
             <a asp-action="AddComment" asp-route-id="@entry.EntryId">Add Comment</a>
             <hr />
         </div>

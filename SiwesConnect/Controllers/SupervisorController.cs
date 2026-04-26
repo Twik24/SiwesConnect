@@ -24,9 +24,19 @@ namespace SiwesConnect.Controllers
             return View();
         }
 
-        public IActionResult ViewLogbookEntries()
+        public async Task<IActionResult> ViewLogbookEntries()
         {
-            var entries = _context.LogbookEntries.ToList();
+            var supervisor = await _userManager.GetUserAsync(User);
+
+            var supervisorPlacementIds = _context.Placements
+                .Where(p => p.SupervisorID == supervisor!.Id)
+                .Select(p => p.PlacementID)
+                .ToList();
+
+            var entries = _context.LogbookEntries
+                .Where(e => supervisorPlacementIds.Contains(e.PlacementID))
+                .ToList();
+
             return View(entries);
         }
 

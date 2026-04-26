@@ -30,7 +30,23 @@ namespace SiwesConnect.Controllers
             var user = await _userManager.GetUserAsync(User);
             var placement = _context.Placements
                 .FirstOrDefault(p => p.StudentID == user!.Id);
-            return View(placement);
+
+            if (placement == null)
+            {
+                return RedirectToAction("NoPlacement");
+            }
+
+            var internship = _context.Internships
+                .FirstOrDefault(i => i.InternshipID == placement.InternshipID);
+
+            ViewBag.InternshipTitle = internship?.Title ?? "Unknown";
+            ViewBag.InternshipLocation = internship?.Location ?? "Unknown";
+            ViewBag.Duration = internship?.Duration ?? "Unknown";
+            ViewBag.StartDate = placement.StartDate;
+            ViewBag.EndDate = placement.EndDate;
+            ViewBag.Status = placement.Status;
+
+            return View();
         }
 
         public IActionResult SubmitLogbook()
@@ -49,7 +65,18 @@ namespace SiwesConnect.Controllers
 
                 if (placement == null)
                 {
-                    return Content("You don't have an active placement yet.");
+                    return RedirectToAction("NoPlacement");
+                }
+
+                var existingEntry = _context.LogbookEntries
+                 .FirstOrDefault(e => e.PlacementID == placement.PlacementID
+                 && e.WeekNumber == model.WeekNumber
+                 && e.ApprovalStatus != "Rejected");
+
+                if (existingEntry != null)
+                {
+                    ModelState.AddModelError("", "You have already submitted an entry for this week. Please wait for your supervisor to review it.");
+                    return View(model);
                 }
 
                 var entry = new LogbookEntry
@@ -78,7 +105,7 @@ namespace SiwesConnect.Controllers
 
             if (placement == null)
             {
-                return Content("You don't have an active placement yet.");
+                return RedirectToAction("NoPlacement");
             }
 
             var entries = _context.LogbookEntries
@@ -111,6 +138,10 @@ namespace SiwesConnect.Controllers
             }
 
             ViewBag.Applications = result;
+            return View();
+        }
+        public IActionResult NoPlacement()
+        {
             return View();
         }
     }
