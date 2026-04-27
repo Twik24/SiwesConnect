@@ -1,18 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace SiwesConnect.Models
 {
-    public class Company
+    public class CompanyRegisterViewModel
     {
-        public int CompanyID { get; set; }
-        public string? UserId { get; set; }
+        
+        [Required]
         public string? CompanyName { get; set; }
+        [Required]
         public string? Industry { get; set; }
+        [Required]
         public string? Location { get; set; }
+        [Required]
         public string? ContactEmail { get; set; }
+        [Required]
         public string? PhoneNumber { get; set; }
-        public string? Status { get; set; }
-
 
     }
 }

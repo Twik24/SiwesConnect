@@ -7,5 +7,6 @@ namespace SiwesConnect.Models
         public string? FullName { get; set; }
         public string? UserType { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
+        public int? CompanyID { get; set; }
     }
 }

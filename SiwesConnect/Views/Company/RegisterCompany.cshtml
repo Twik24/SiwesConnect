@@ -1,0 +1,36 @@
+﻿@model SiwesConnect.Models.CompanyRegisterViewModel
+
+<h2>Register Your Company</h2>
+<p>Fill in your company details. Your registration will be reviewed by the admin.</p>
+
+<form asp-action="RegisterCompany" method="post">
+    <div>
+        <label>Company Name</label>
+        <input asp-for="CompanyName" />
+        <span asp-validation-for="CompanyName"></span>
+    </div>
+    <div>
+        <label>Industry</label>
+        <input asp-for="Industry" />
+        <span asp-validation-for="Industry"></span>
+    </div>
+    <div>
+        <label>Location</label>
+        <input asp-for="Location" />
+        <span asp-validation-for="Location"></span>
+    </div>
+    <div>
+        <label>Contact Email</label>
+        <input asp-for="ContactEmail" />
+        <span asp-validation-for="ContactEmail"></span>
+    </div>
+    <div>
+        <label>Phone Number</label>
+        <input asp-for="PhoneNumber" />
+        <span asp-validation-for="PhoneNumber"></span>
+    </div>
+    <div asp-validation-summary="All"></div>
+    <button type="submit">Register Company</button>
+</form>
+
+<p>Already registered? <a asp-controller="Account" asp-action="Login">Login here</a></p>

@@ -8,17 +8,23 @@ namespace SiwesConnect.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+        SignInManager<ApplicationUser> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         public IActionResult Register()
         {
-            return View();
+            ViewBag.Companies = _context.Companies
+                .Where(c => c.Status == "Active")
+                .ToList();
+            return View();  
         }
 
         [HttpPost]
@@ -31,7 +37,8 @@ namespace SiwesConnect.Controllers
                     FullName = model.FullName,
                     Email = model.Email,
                     UserName = model.Email,
-                    UserType = model.UserType
+                    UserType = model.UserType,
+                    CompanyID = model.CompanyID
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password !);
@@ -47,6 +54,9 @@ namespace SiwesConnect.Controllers
                 }
             }
 
+            ViewBag.Companies = _context.Companies
+             .Where(c => c.Status == "Active")
+            .ToList();
             return View(model);
         }
 
@@ -80,11 +90,11 @@ namespace SiwesConnect.Controllers
             return View(model);
         }
 
+
         public IActionResult Login()
         {
             return View();
         }
-
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

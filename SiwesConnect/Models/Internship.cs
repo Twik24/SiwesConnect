@@ -12,6 +12,7 @@ namespace SiwesConnect.Models
         public string? Duration { get; set; }
         public DateTime DatePosted { get; set; }
         public DateTime ApplicationDeadline{ get; set; }
+        public string? SupervisorID { get; set; }
 
 
     }

@@ -56,6 +56,33 @@ namespace SiwesConnect.Controllers
             ViewBag.Placements = result;
             return View();
         }
+        public IActionResult ManageCompanies()
+        {
+            var companies = _context.Companies.ToList();
+            ViewBag.Companies = companies;
+            return View();
+        }
 
+        public async Task<IActionResult> ActivateCompany(int id)
+        {
+            var company = _context.Companies.FirstOrDefault(c => c.CompanyID == id);
+            if (company != null)
+            {
+                company.Status = "Active";
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("ManageCompanies");
+        }
+
+        public async Task<IActionResult> RejectCompany(int id)
+        {
+            var company = _context.Companies.FirstOrDefault(c => c.CompanyID == id);
+            if (company != null)
+            {
+                company.Status = "Rejected";
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("ManageCompanies");
+        }
     }
 }

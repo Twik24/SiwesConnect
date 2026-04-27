@@ -32,6 +32,28 @@
             <option value="Admin">Admin</option>
         </select>
         <span asp-validation-for="UserType"></span>
+        <div id="companySection" style="display:none;">
+            <label>Select Your Company</label>
+            <select asp-for="CompanyID">
+                <option value="">-- Select Company --</option>
+                @foreach (var company in ViewBag.Companies)
+                {
+                    <option value="@company.CompanyID">@company.CompanyName</option>
+                }
+            </select>
+            <span asp-validation-for="CompanyID"></span>
+        </div>
+
+        <script>
+                    document.getElementById('UserType').addEventListener('change', function() {
+                        var companySection = document.getElementById('companySection');
+                        if (this.value === 'Supervisor') {
+                            companySection.style.display = 'block';
+                        } else {
+                            companySection.style.display = 'none';
+                        }
+                    });
+        </script>
     </div>
     <div asp-validation-summary="All"></div>
     <button type="submit">Register</button>

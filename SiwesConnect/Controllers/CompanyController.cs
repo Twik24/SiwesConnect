@@ -31,6 +31,7 @@ namespace SiwesConnect.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
                 var internship = new Internship
                 {
                     Title = model.Title,
@@ -38,7 +39,8 @@ namespace SiwesConnect.Controllers
                     Location = model.Location,
                     Duration = model.Duration,
                     ApplicationDeadline = model.ApplicationDeadline,
-                    DatePosted = DateTime.Now
+                    DatePosted = DateTime.Now,
+                    SupervisorID = user!.Id
                 };
 
                 _context.Internships.Add(internship);
@@ -112,6 +114,42 @@ namespace SiwesConnect.Controllers
         {
             return View();
         }
+        // Show company registration form (public - no login needed)
+        [AllowAnonymous]
+        public IActionResult RegisterCompany()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterCompany(CompanyRegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var company = new Company
+                {
+                    CompanyName = model.CompanyName,
+                    Industry = model.Industry,
+                    Location = model.Location,
+                    ContactEmail = model.ContactEmail,
+                    PhoneNumber = model.PhoneNumber,
+                    Status = "Pending"
+                };
+
+                _context.Companies.Add(company);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("CompanyRegistrationSuccess");
+            }
+
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        public IActionResult CompanyRegistrationSuccess()
+        {
+            return View();
+        }
     }
   }

@@ -22,5 +22,7 @@ namespace SiwesConnect.Models
 
         [Required]
         public string? UserType { get; set; }
+
+        public int? CompanyID { get; set; }
     }
 }

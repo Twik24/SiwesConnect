@@ -1,0 +1,28 @@
+﻿<h2>Manage Companies</h2>
+
+@if (ViewBag.Companies == null || ViewBag.Companies.Count == 0)
+{
+    <p>No companies registered yet.</p>
+}
+else
+{
+    foreach (var company in ViewBag.Companies)
+    {
+        <div>
+            <p><strong>Company Name:</strong> @company.CompanyName</p>
+            <p><strong>Industry:</strong> @company.Industry</p>
+            <p><strong>Location:</strong> @company.Location</p>
+            <p><strong>Contact Email:</strong> @company.ContactEmail</p>
+            <p><strong>Phone Number:</strong> @company.PhoneNumber</p>
+            <p><strong>Status:</strong> @company.Status</p>
+
+            @if (company.Status == "Pending")
+            {
+                <a asp-action="ActivateCompany" asp-route-id="@company.CompanyID">Activate|</a>
+            
+                <a asp-action="RejectCompany" asp-route-id="@company.CompanyID"> Reject </a>
+            }
+            <hr />
+        </div>
+    }
+}
