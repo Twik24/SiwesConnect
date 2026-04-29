@@ -44,15 +44,22 @@ namespace SiwesConnect.Controllers
                 var student = await _userManager.FindByIdAsync(placement.StudentID!);
                 var internship = _context.Internships
                     .FirstOrDefault(i => i.InternshipID == placement.InternshipID);
+                var supervisor = await _userManager.FindByIdAsync(internship?.SupervisorID ?? "");
+                var company = supervisor?.CompanyID != null
+                    ? _context.Companies.FirstOrDefault(c => c.CompanyID == supervisor.CompanyID)
+                    : null;
 
                 result.Add(new PlacementDetail
                 {
                     StudentName = student?.FullName ?? "Unknown",
                     InternshipTitle = internship?.Title ?? "Unknown",
+                    CompanyName = company?.CompanyName ?? "Unknown",
                     StartDate = placement.StartDate,
                     EndDate = placement.EndDate,
+                    Status = placement.Status
                 });
             }
+
             ViewBag.Placements = result;
             return View();
         }

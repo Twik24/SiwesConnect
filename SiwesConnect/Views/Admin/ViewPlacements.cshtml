@@ -1,19 +1,20 @@
-﻿
-<h2>All Student Placements</h2>
+﻿<h2>All Student Placements</h2>
+
 @if (ViewBag.Placements == null || ViewBag.Placements.Count == 0)
 {
     <p>No placements yet.</p>
 }
 else
 {
-    foreach(var placement in ViewBag.Placements)
+    foreach (var placement in ViewBag.Placements)
     {
         <div>
-            <p><strong>Student:</strong>@placement.StudentName</p>
-            <p><strong>Internship:</strong>@placement.InternshipTitle</p>
-            <p><strong>Start Date:</strong>@placement.StartDate.ToShortDateString()</p>
-            <p><strong>End Date:</strong>@placement.EndDate.ToShortDateString()</p>
-            <p><strong>Status:</strong>@placement.Status</p>
+            <p><strong>Student:</strong> @placement.StudentName</p>
+            <p><strong>Company:</strong> @placement.CompanyName</p>
+            <p><strong>Internship:</strong> @placement.InternshipTitle</p>
+            <p><strong>Start Date:</strong> @placement.StartDate.ToShortDateString()</p>
+            <p><strong>End Date:</strong> @placement.EndDate.ToShortDateString()</p>
+            <p><strong>Status:</strong> @placement.Status</p>
             <hr />
         </div>
     }

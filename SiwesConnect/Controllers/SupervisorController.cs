@@ -37,7 +37,28 @@ namespace SiwesConnect.Controllers
                 .Where(e => supervisorPlacementIds.Contains(e.PlacementID))
                 .ToList();
 
-            return View(entries);
+            var result = new List<LogbookDetail>();
+
+            foreach (var entry in entries)
+            {
+                var placement = _context.Placements
+                    .FirstOrDefault(p => p.PlacementID == entry.PlacementID);
+                var student = await _userManager.FindByIdAsync(placement?.StudentID ?? "");
+
+                result.Add(new LogbookDetail
+                {
+                    EntryId = entry.EntryId,
+                    StudentName = student?.FullName ?? "Unknown",
+                    WeekNumber = entry.WeekNumber,
+                    WorkDescription = entry.WorkDescription,
+                    DateSubmitted = entry.DateSubmitted,
+                    ApprovalStatus = entry.ApprovalStatus,
+                    SupervisorComment = entry.SupervisorComment
+                });
+            }
+
+            ViewBag.Entries = result;
+            return View();
         }
 
         public async Task<IActionResult> ApproveEntry(int id)
@@ -82,21 +103,32 @@ namespace SiwesConnect.Controllers
 
         public async Task<IActionResult> ViewApplications()
         {
-            var applications = _context.Applications.ToList();
+            var supervisor = await _userManager.GetUserAsync(User);
+
+            var supervisorInternshipIds = _context.Internships
+                .Where(i => i.SupervisorID == supervisor!.Id)
+                .Select(i => i.InternshipID)
+                .ToList();
+
+            var applications = _context.Applications
+                .Where(a => supervisorInternshipIds.Contains(a.InternshipID))
+                .ToList();
+
             var result = new List<ApplicationDetail>();
 
             foreach (var app in applications)
             {
                 var student = await _userManager.FindByIdAsync(app.StudentID!);
-                var internship = _context.Internships.FirstOrDefault(i => i.InternshipID == app.InternshipID);
+                var internship = _context.Internships
+                    .FirstOrDefault(i => i.InternshipID == app.InternshipID);
+
                 result.Add(new ApplicationDetail
                 {
                     ApplicationID = app.ApplicationID,
                     StudentName = student?.FullName ?? "Unknown",
                     InternshipTitle = internship?.Title ?? "Unknown",
-                    InternshipID = app.InternshipID,
-                    ApplicationDate = app.ApplicationDate,
                     CoverLetter = app.CoverLetter,
+                    ApplicationDate = app.ApplicationDate,
                     Status = app.Status
                 });
             }
@@ -153,14 +185,17 @@ namespace SiwesConnect.Controllers
                 var student = await _userManager.FindByIdAsync(placement.StudentID!);
                 var internship = _context.Internships
                     .FirstOrDefault(i => i.InternshipID == placement.InternshipID);
+                var company = supervisor?.CompanyID != null
+                    ? _context.Companies.FirstOrDefault(c => c.CompanyID == supervisor.CompanyID)
+                    : null;
 
                 result.Add(new PlacementDetail
                 {
                     StudentName = student?.FullName ?? "Unknown",
                     InternshipTitle = internship?.Title ?? "Unknown",
+                    CompanyName = company?.CompanyName ?? "Unknown",
                     StartDate = placement.StartDate,
                     EndDate = placement.EndDate,
-                    
                     Status = placement.Status
                 });
             }

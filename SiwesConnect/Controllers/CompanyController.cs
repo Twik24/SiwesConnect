@@ -57,15 +57,55 @@ namespace SiwesConnect.Controllers
         public async Task<IActionResult> BrowseInternships()
         {
             var internships = _context.Internships.ToList();
-            return View(internships);
+            var result = new List<InternshipDetail>();
+
+            foreach (var internship in internships)
+            {
+                var supervisor = await _userManager.FindByIdAsync(internship.SupervisorID ?? "");
+                var company = supervisor?.CompanyID != null
+                    ? _context.Companies.FirstOrDefault(c => c.CompanyID == supervisor.CompanyID)
+                    : null;
+
+                result.Add(new InternshipDetail
+                {
+                    InternshipID = internship.InternshipID,
+                    Title = internship.Title ?? "Unknown",
+                    Location = internship.Location ?? "Unknown",
+                    Duration = internship.Duration ?? "Unknown",
+                    ApplicationDeadline = internship.ApplicationDeadline,
+                    Description = internship.Description ?? "Unknown",
+                    CompanyName = company?.CompanyName ?? "Unknown"
+                });
+            }
+
+            ViewBag.Internships = result;
+            return View();
         }
 
         //Students apply for the internship
         [Authorize(Roles = "Student")]
         public IActionResult Apply(int id)
         {
+            var internship = _context.Internships.FirstOrDefault(i => i.InternshipID == id);
+
+            if (internship == null)
+            {
+                return Content("Internship not found.");
+            }
+
+            if (internship.ApplicationDeadline < DateTime.Now)
+            {
+                return RedirectToAction("DeadlinePassed");
+            }
+
             var model = new ApplyViewModel { InternshipID = id };
             return View(model);
+        }
+
+        [Authorize(Roles = "Student")]
+        public IActionResult DeadlinePassed()
+        {
+            return View();
         }
 
         [HttpPost]
