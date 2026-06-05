@@ -1,31 +1,26 @@
 ﻿@model SiwesConnect.Models.LoginViewModel
 
-<div class="row justify-content-center mt-5">
-    <div class="col-md-5">
-        <div class="card shadow">
-            <div class="card-body p-4">
-                <h2 class="card-title text-center mb-4 text-primary fw-bold">Login</h2>
-                <form asp-action="Login" method="post">
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input asp-for="Email" class="form-control" placeholder="Enter your email" />
-                        <span asp-validation-for="Email" class="text-danger small"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input asp-for="Password" class="form-control" placeholder="Enter your password" />
-                        <span asp-validation-for="Password" class="text-danger small"></span>
-                    </div>
-                    <div class="mb-3 form-check">
-                        <input asp-for="RememberMe" class="form-check-input" type="checkbox" />
-                        <label class="form-check-label">Remember Me</label>
-                    </div>
-                    <div asp-validation-summary="All" class="text-danger small mb-3"></div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                </form>
-                <hr />
-                <p class="text-center mb-0">Don't have an account? <a asp-action="Register">Register here</a></p>
-            </div>
-        </div>
+<h2>Login</h2>
+
+<form asp-action="Login" method="post">
+   
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
     </div>
-</div>
+    <div>
+        <label>Password</label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label>Remember Me</label>
+        <input asp-for="RememberMe" type="checkbox" />
+    </div>
+ 
+   
+    <div asp-validation-summary="All"></div>
+    <button type="submit">Login</button>
+</form>
+<p>Don't have an account? <a asp-action="Register">Register here</a></p>
