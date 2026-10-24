@@ -2,8 +2,16 @@
 
 A web based SIWES internship management system that connects students, companies, supervisors and administrators. Built as a Final Year Project at Precious Cornerstone University.
 
-## Demo
-Coming soon
+## Screenshots
+
+### Login
+![Login page](docs/screenshots/login.png)
+
+### Internship Listings
+![Internship list](docs/screenshots/internships.png)
+
+### Supervisor Logbook Review
+![Logbook review](docs/screenshots/logbook.png)
 
 ## Features
 - Four roles with role based access control: Admin, Student, Company, Supervisor
